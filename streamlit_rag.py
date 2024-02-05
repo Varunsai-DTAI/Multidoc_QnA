@@ -13,7 +13,6 @@ def read_and_textify(files):
     sources_list = []
     for file in files:
         pdfReader = PyPDF2.PdfReader(file)
-        #print("Page Number:", len(pdfReader.pages))
         for i in range(len(pdfReader.pages)):
           pageObj = pdfReader.pages[i]
           text = pageObj.extract_text()
@@ -26,7 +25,6 @@ st.set_page_config(layout="centered", page_title="Multidoc_QnA")
 st.header("Multidoc_QnA")
 st.write("---")
   
-#file uploader
 uploaded_files = st.file_uploader("Upload documents",accept_multiple_files=True, type=["txt","pdf"])
 st.write("---")
 
@@ -40,13 +38,9 @@ elif uploaded_files:
   documents = textify_output[0]
   sources = textify_output[1]
   
-  #extract embeddings
   embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
-  #vstore with metadata. Here we will store page numbers.
   vStore = Chroma.from_texts(documents, embeddings, metadatas=[{"source": s} for s in sources])
-  #deciding model
   model_name = "gpt-3.5-turbo"
-  # model_name = "gpt-4"
 
   retriever = vStore.as_retriever()
   retriever.search_kwargs = {'k':2}
