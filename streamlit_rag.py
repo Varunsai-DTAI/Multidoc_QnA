@@ -41,7 +41,7 @@ elif uploaded_files:
   sources = textify_output[1]
   
   #extract embeddings
-  embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["OPENAI_API_KEY"])
+  embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
   #vstore with metadata. Here we will store page numbers.
   vStore = Chroma.from_texts(documents, embeddings, metadatas=[{"source": s} for s in sources])
   #deciding model
@@ -52,7 +52,7 @@ elif uploaded_files:
   retriever.search_kwargs = {'k':2}
 
   #initiate model
-  llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["OPENAI_API_KEY"], streaming=True)
+  llm = OpenAI(model_name=model_name, openai_api_key = st.secrets["openai_api_key"], streaming=True)
   model = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
   
   st.header("Ask your data")
