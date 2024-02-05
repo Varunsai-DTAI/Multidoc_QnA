@@ -43,7 +43,7 @@ elif uploaded_files:
   #extract embeddings
   embeddings = OpenAIEmbeddings(openai_api_key = st.secrets["openai_api_key"])
   #vstore with metadata. Here we will store page numbers.
-  vStore = Chroma.from_texts(documents, embeddings, metadatas=[{"source": s} for s in sources])
+  vStore = Chroma.from_documents(documents, embeddings, metadatas=[{"source": s} for s in sources])
   #deciding model
   model_name = "gpt-3.5-turbo"
   # model_name = "gpt-4"
